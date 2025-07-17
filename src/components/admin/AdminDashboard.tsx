@@ -27,6 +27,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { Villa, Booking } from '@/types/villa'
+import { VillaManagement } from './VillaManagement'
 
 export function AdminDashboard() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
@@ -191,6 +192,10 @@ export function AdminDashboard() {
             <TabsTrigger value="calendar" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
               <CalendarIcon className="w-4 h-4 mr-2" />
               Calendar
+            </TabsTrigger>
+            <TabsTrigger value="manage" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
+              <Plus className="w-4 h-4 mr-2" />
+              Manage Villas
             </TabsTrigger>
           </TabsList>
 
@@ -512,6 +517,10 @@ export function AdminDashboard() {
                 </Card>
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="manage">
+            <VillaManagement />
           </TabsContent>
         </Tabs>
       </div>

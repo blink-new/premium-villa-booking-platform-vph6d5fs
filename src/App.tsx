@@ -13,6 +13,7 @@ import {
   X
 } from 'lucide-react'
 import { Homepage } from './components/website/Homepage'
+import { VillaDetails } from './components/website/VillaDetails'
 import { AdminDashboard } from './components/admin/AdminDashboard'
 import { CRMDashboard } from './components/crm/CRMDashboard'
 import { BookingEngine } from './components/booking/BookingEngine'
@@ -27,6 +28,7 @@ type AppView = 'website' | 'admin' | 'crm' | 'booking' | 'voice-agent'
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('website')
+  const [selectedVillaId, setSelectedVillaId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -116,6 +118,14 @@ function App() {
     // Here you would update the lead status and save transcript
   }
 
+  const handleVillaSelect = (villaId: string) => {
+    setSelectedVillaId(villaId)
+  }
+
+  const handleBackToHomepage = () => {
+    setSelectedVillaId(null)
+  }
+
   const navigation = [
     { id: 'website', name: 'Website', icon: Home, view: 'website' as AppView },
     { id: 'admin', name: 'Admin Panel', icon: Settings, view: 'admin' as AppView },
@@ -140,7 +150,10 @@ function App() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'website':
-        return <Homepage />
+        if (selectedVillaId) {
+          return <VillaDetails villaId={selectedVillaId} onBack={handleBackToHomepage} />
+        }
+        return <Homepage onVillaSelect={handleVillaSelect} />
       case 'admin':
         return <AdminDashboard />
       case 'crm':
@@ -150,7 +163,7 @@ function App() {
       case 'voice-agent':
         return <VoiceAgent leads={mockLeads} onCallComplete={handleCallComplete} />
       default:
-        return <Homepage />
+        return <Homepage onVillaSelect={handleVillaSelect} />
     }
   }
 

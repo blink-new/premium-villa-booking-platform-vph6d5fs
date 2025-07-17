@@ -28,7 +28,11 @@ interface SearchFormData {
   guests: number
 }
 
-export function Homepage() {
+interface HomepageProps {
+  onVillaSelect: (villaId: string) => void
+}
+
+export function Homepage({ onVillaSelect }: HomepageProps) {
   const [searchForm, setSearchForm] = useState<SearchFormData>({
     destination: '',
     checkIn: '',
@@ -128,8 +132,11 @@ export function Homepage() {
             </nav>
             
             <div className="flex items-center space-x-4">
+              <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
+                Guest Checkout Available
+              </Badge>
               <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
-                Sign In
+                Sign In (Optional)
               </Button>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 List Your Villa
@@ -264,7 +271,11 @@ export function Homepage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredVillas.map((villa) => (
-              <Card key={villa.id} className="group cursor-pointer overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card 
+                key={villa.id} 
+                className="group cursor-pointer overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => onVillaSelect(villa.id)}
+              >
                 <div className="relative h-64">
                   <img 
                     src={villa.image} 
@@ -316,7 +327,10 @@ export function Homepage() {
                     ))}
                   </div>
                   
-                  <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white">
+                  <Button 
+                    onClick={() => onVillaSelect(villa.id)}
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white"
+                  >
                     View Details
                     <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>
